@@ -55,11 +55,23 @@ function createDivsForColors(colorArray) {
 
 // TODO: Implement this function!
 let clickcount = 0;
+var score = 0;
+let scoreUI = document.createElement('h2');
+scoreUI.innerText = `Your current score: ${score}`;
+gameContainer.parentElement.appendChild(scoreUI);
+
 function handleCardClick(event) {
+    score++;
+    scoreUI.innerText = `Your current score: ${score}`;
     console.log("you just clicked", event.target.classList.value);
     clickcount++;
-    console.log(clickcount)
-    
+    console.log(score)
+
+    //eliminate clicking on an existing match
+    if (event.target.id == "matched") {
+        clickcount--;
+    }
+
     if (clickcount === 1 && event.target.id != "matched") {
         console.log('should be a 1:' + clickcount)
         event.target.style.backgroundColor = event.target.classList.value;
@@ -67,6 +79,7 @@ function handleCardClick(event) {
         temp.setAttribute('id', 'firstclick');
         console.log(temp)  
     } 
+
     //eliminate clicking on same box twice
     if (event.target.id==='firstclick' && clickcount ===2) {
         clickcount--;
@@ -92,8 +105,6 @@ function handleCardClick(event) {
         }
         }
 }
-
-
 
 // when the DOM loads
 createDivsForColors(shuffledColors);
