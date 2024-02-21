@@ -13,13 +13,9 @@ const COLORS = [
   "purple"
 ];
 
-// here is a helper function to shuffle an array
-// it returns the same array with values shuffled
-// it is based on an algorithm called Fisher Yates if you want ot research more
+// Fisher Yates algorithm used to shuffle array
 function shuffle(array) {
   let counter = array.length;
-
-  // While there are elements in the array
   while (counter > 0) {
     // Pick a random index
     let index = Math.floor(Math.random() * counter);
@@ -58,10 +54,46 @@ function createDivsForColors(colorArray) {
 }
 
 // TODO: Implement this function!
+let clickcount = 0;
 function handleCardClick(event) {
-  // you can use event.target to see which element was clicked
-  console.log("you just clicked", event.target);
+    console.log("you just clicked", event.target.classList.value);
+    clickcount++;
+    console.log(clickcount)
+    
+    if (clickcount === 1 && event.target.id != "matched") {
+        console.log('should be a 1:' + clickcount)
+        event.target.style.backgroundColor = event.target.classList.value;
+        let temp = event.target;
+        temp.setAttribute('id', 'firstclick');
+        console.log(temp)  
+    } 
+    //eliminate clicking on same box twice
+    if (event.target.id==='firstclick' && clickcount ===2) {
+        clickcount--;
+    }
+    if (clickcount === 2) {
+        console.log('should be a 2:' + clickcount)
+        event.target.style.backgroundColor = event.target.classList.value;
+        let first = document.getElementById('firstclick');
+        first.setAttribute('id', '');
+        console.log('heyo')
+
+        //leave revealed if it's a match
+        if (event.target.style.backgroundColor === first.style.backgroundColor) {
+            first.setAttribute('id', 'matched');
+            event.target.setAttribute('id', 'matched');
+            clickcount = 0;
+        } else {
+            setTimeout(function (){
+                event.target.style.backgroundColor = "white";
+                first.style.backgroundColor = "white";
+                clickcount = 0;
+            },1000)
+        }
+        }
 }
+
+
 
 // when the DOM loads
 createDivsForColors(shuffledColors);
